@@ -1,4 +1,4 @@
-package config
+package main
 
 import (
 	"fmt"
@@ -7,7 +7,7 @@ import (
 	"sync"
 	"log"
 )
-var Wg *sync.WaitGroup
+
 
 type Config interface{
 	Close()			//关闭连接,使用时需使用defer
@@ -168,18 +168,18 @@ func (m *Connect)GetWatch(path string,callback func([]byte))(){
 
 //节点及其子节点监听
 func (m *Connect)WatchDemoNode(path string,callback2 func([]byte)) {
-    Wg.Add(1)
+
     //创建
     go watchNodeCreated(path, m.conn)
     //改值
     go watchNodeDataChange(path, m.conn,callback2)
     //子节点数量变化「增删」
-	//go watchNodeDataChange2(path, m.conn,callback2)
-	//(新)子节点数据、数量监听
-    go watchChildrenChanged(path, m.conn,callback2)
+	go watchNodeDataChange2(path, m.conn,callback2)
+	//(新)子节点数量监听
+    go watchChildrenChanged(path, m.conn)
     //删除节点
     watchNodeDeleted(path, m.conn)
-    Wg.Done()
+
 }
 
 //私有
@@ -222,6 +222,7 @@ func watchNodeDataChange(path string, conn *zk.Conn,callback2 func([]byte)) {
 			data, _, err2 := conn.Get(path)
 			must(err2)
 			callback2(data)
+			
 		}
     }
 }
@@ -238,17 +239,12 @@ func watchNodeDataChange2(path string, conn *zk.Conn,callback2 func([]byte)){
     }
 }
 
-func watchChildrenChanged(path string, conn *zk.Conn,callback3 func([]byte)) {
+
+func watchChildrenChanged(path string, conn *zk.Conn) {
     for {
 		path_list, _, ch,err := conn.ChildrenW(path)
 		must(err)
 		fmt.Println(path_list)
-		for i,v := range path_list {
-            path_list[i] = path+"/"+v
-        }
-        for _, vv := range path_list{
-            go watchNodeDataChange(vv, conn,callback3)
-        }
         e := <-ch
         log.Println("The changed path:",e.Path,"ChildrenW:", e.Type, "Event:", e)
     }
