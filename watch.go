@@ -100,9 +100,11 @@ func (m *Connect)Children(path string)[]string{
 //节点存在与否
 func (m *Connect)Exist(path string)bool{
 	state, _, err := m.conn.Exists(path)
-	must(err)
-    log.Printf("The %s state: %v.", path, state)
-    return state
+	if err != nil{
+		log.Println(err)
+	}
+	log.Printf("The %s state: %v.", path, state)
+	return state
 }
 
 //修改数据
