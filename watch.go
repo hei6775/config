@@ -8,15 +8,15 @@ import (
 
 type Config interface{
 	Close()			//关闭连接,使用时需使用defer
-	CreateZnode()	//创建指定的节点，默认永久节点 flag:0 永久；1：短暂；2：永久有序；3：短暂有序
+	CreateZnode()		//创建指定的节点，默认永久节点 flag:0 永久；1：短暂；2：永久有序；3：短暂有序
 	Delete()		//删除指定的节点
 	Getdata()		//得到指定znode数据
 	Children()		//得到子节点
 	Exist()			//判断指定节点存在状态
 	SetData()		//设置数据
-    CreateWatch()	//节点创建监听
-    DeleteWatch()   //节点删除监听
-	ChildrenWatch()	//子节点数量变化监听	
+    	CreateWatch()		//节点创建监听
+    	DeleteWatch()   	//节点删除监听
+	ChildrenWatch()		//子节点数量变化监听	
 	GetWatch()		//指定节点监听,callback需要调用者自己定义
 
 }
