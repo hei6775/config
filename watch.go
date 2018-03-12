@@ -7,7 +7,7 @@ import (
 	"sync"
 	"log"
 )
-var wg *sync.WaitGroup
+var Wg *sync.WaitGroup
 
 type Config interface{
 	Close()			//关闭连接,使用时需使用defer
@@ -168,7 +168,7 @@ func (m *Connect)GetWatch(path string,callback func([]byte))(){
 
 //节点及其子节点监听
 func (m *Connect)WatchDemoNode(path string,callback2 func([]byte)) {
-    wg.Add(1)
+    Wg.Add(1)
     //创建
     go watchNodeCreated(path, m.conn)
     //改值
@@ -179,7 +179,7 @@ func (m *Connect)WatchDemoNode(path string,callback2 func([]byte)) {
     go watchChildrenChanged(path, m.conn,callback2)
     //删除节点
     watchNodeDeleted(path, m.conn)
-    wg.Done()
+    Wg.Done()
 }
 
 //私有
