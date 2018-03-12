@@ -111,7 +111,7 @@ func (m *Connect)Exist(path string)bool{
 func (m *Connect)Setdata(path string, data []byte){
 	_, err := m.conn.Set(path, data, -1)
 	must(err)
-	log.Println("The %s data was setted successful.", path)
+	log.Printf("The %s's new data was setted successful.", path)
 }
 
 //节点创建监听，对于节点数据修改也会引起eventDatechanged
