@@ -18,7 +18,9 @@ type Config interface{
     	DeleteWatch()   	//节点删除监听
 	ChildrenWatch()		//子节点数量变化监听	
 	GetWatch()		//指定节点监听,callback需要调用者自己定义
-
+				//使用GetWatch监听多个节点建议使用sync包  如：var wg *sync.WaitGroup
+				//					    wg = &sync.WaitGroup{}
+				//					    wg.Add(1)    wg.Done()    wg.Wait()
 }
 
 //Connect结构体
