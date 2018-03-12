@@ -111,7 +111,7 @@ func (m *Connect)Exist(path string)bool{
 func (m *Connect)Setdata(path string, data []byte){
 	_, err := m.conn.Set(path, data, -1)
 	must(err)
-	log.Println("The %s's data was setted successful.", path)
+	log.Println("The %s data was setted successful.", path)
 }
 
 //节点创建监听，对于节点数据修改也会引起eventDatechanged
@@ -148,13 +148,13 @@ func (m *Connect)DeleteWatch(path string)(){
 func (m *Connect)ChildrenWatch(path string){
 	for{
 		pathlist, _, ech, err := m.conn.ChildrenW(path)
-        must(err)
-        log.Println(pathlist)
-        event :=<- ech
-        if event.Type == zk.EventNodeDataChanged{
-        }else{
-            log.Println("E.Path:",event.Path,"E.Type:", event.Type, "E.State:", event.State)
-        }
+        	must(err)
+        	log.Println(pathlist)
+        	event :=<- ech
+        	if event.Type == zk.EventNodeDataChanged{
+        	}else{
+            	log.Println("E.Path:",event.Path,"E.Type:", event.Type, "E.State:", event.State)
+        	}
 	}
 }
 
@@ -165,14 +165,14 @@ func (m *Connect)GetWatch(path string,callback func([]byte))(){
 		must(err)
 		event :=<- ech
 		switch event.Type{
-        case zk.EventNodeDataChanged:
-            log.Println("E.Path:",event.Path,"E.Type:", event.Type, "Event:", event)
+        	case zk.EventNodeDataChanged:
+            		log.Println("E.Path:",event.Path,"E.Type:", event.Type, "Event:", event)
 			data, _, err := m.conn.Get(path)
 			must(err)
 			callback(data)
-        case zk.EventNodeDeleted:
-            log.Println("E.Path:",event.Path,"E.Type:", event.Type, "Event:", event)
-            log.Println("Now,the connect was closed")
+       		case zk.EventNodeDeleted:
+            		log.Println("E.Path:",event.Path,"E.Type:", event.Type, "Event:", event)
+            		log.Println("Now,the connect was closed")
 			m.conn.Close()
 		default:
 			log.Println("path:", event.Path)
