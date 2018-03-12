@@ -3,7 +3,6 @@ package config
 import (
 	"time"
 	"github.com/samuel/go-zookeeper/zk"
-	"sync"
 	"log"
 )
 
