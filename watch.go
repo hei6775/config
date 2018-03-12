@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"time"
 	"github.com/samuel/go-zookeeper/zk"
-	"sync"
 	"log"
 )
 
