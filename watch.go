@@ -154,6 +154,7 @@ func (m *Connect)ChildrenWatch(path string){
         	log.Println(pathlist)
         	event :=<- ech
         	if event.Type == zk.EventNodeDataChanged{
+			log.Println("DataChange",event.Path,event.Type,event.State)
         	}else{
             	log.Println("E.Path:",event.Path,"E.Type:", event.Type, "E.State:", event.State)
         	}
